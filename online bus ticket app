@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bus Routes"
+        android:textSize="24sp"
+        android:layout_margin="16dp"/>
+
+    <ListView
+        android:id="@+id/bus_routes_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="@null"
+        android:dividerHeight="0dp"/>
+
+</LinearLayout>
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // Initialize the bus routes
+        List<BusRoute> busRoutes = new ArrayList<>();
+        busRoutes.add(new BusRoute("New York", "Boston", "12:00 PM", "4 hours"));
+        busRoutes.add(new BusRoute("Chicago", "Detroit", "8:00 AM", "5 hours"));
+
+        // Set the bus routes to the adapter
+        BusRoutesAdapter adapter = new BusRoutesAdapter(this, busRoutes);
+        ListView listView = findViewById(R.id.bus_routes_list);
+        listView.setAdapter(adapter);
+    }
+}
+public class BusRoute {
+
+    private String source;
+    private String destination;
+    private String departureTime;
+    private String travelTime;
+
+    public BusRoute(String source, String destination, String departureTime, String travelTime) {
+        this.source = source;
+        this.destination = destination;
+        this.departureTime = departureTime;
+        this.travelTime = travelTime;
+    }
+
+    // Getters and setters
+}
+public class BusRoutesAdapter extends BaseAdapter {
+
+    private Context context;
+    private List<BusRoute> busRoutes;
+
+    public BusRoutesAdapter(Context context, List<BusRoute> busRoutes) {
+        this.context = context;
+        this.busRoutes = busRoutes;
+    }
+
+    @Override
+    public int getCount() {
+        return busRoutes.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return busRoutes.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View view = convertView;
+
+        if (view == null) {
+            LayoutInflater inflater = LayoutInflater.from(context);
+            view = inflater.inflate(R.layout.bus_route_item, null);
+        }
+
+        BusRoute busRoute = busRoutes.get(position);
+
+        TextView sourceTextView = view.findViewById(R.id.source);
+        sourceTextView.setText(busRoute.getSource());
+
+        TextView destinationTextView = view.findViewById(R.id.destination);
+        destinationTextView.setText(busRoute.getDestination());
+
+        TextView departureTimeTextView = view.findViewById(R.
